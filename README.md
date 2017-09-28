@@ -31,8 +31,8 @@ The configuration is done through Terraform variables. Example *tfvars* file is 
 
 | Option | Explanation | Example |
 |--------|-------------|---------|
-| `aws_region` | AWS region which should be used | `eu-central-1` |
-| `name` | Name of the Kubernetes cluster (used to find the resources for tagging but also to name resources created by this configuration) | `my-minikube` |
+| `aws_region` | AWS region which should be used | `eu-east-1` |
+| `lambda_name` | Will be used to name the tagging lambda, its roles etc. | `my-k8s` |
 | `search_tag_key` | The Key of the tag which determines resources belonging to the application. All resources with matching tag and its value will be tagged with additional tags. | `kubernetes.io/cluster/aws-k8s` |
 | `search_tag_value` | The Valur of the tag which determines resources belonging to the application. All resources with matching tag and its value will be tagged with additional tags. | `owned` |
 | `tags` | Tags which should be applied to all resources | `{ Hello = "World" }` |

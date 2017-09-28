@@ -3,8 +3,8 @@ variable "aws_region" {
     default     = "eu-east-1"
 }
 
-variable "name" {
-    description = "Name of the installation we are tagging - will be used to name all resources unless they already have a `Name` tag."
+variable "lambda_name" {
+    description = "Will be used to name the tagging lambda, its roles etc."
 }
 
 variable "search_tag_key" {
@@ -13,10 +13,6 @@ variable "search_tag_key" {
 
 variable "search_tag_value" {
     description = "The Valur of the tag which determines resources belonging to the application. All resources with matching tag and its value will be tagged with additional tags."
-}
-
-variable "name" {
-    description = "Name of the installation we are tagging - will be used to name all resources unless they already have a `Name` tag."
 }
 
 variable "tags" {
