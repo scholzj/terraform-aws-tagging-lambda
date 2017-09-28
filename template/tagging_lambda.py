@@ -20,8 +20,8 @@ if 'Name' not in setTags.keys():
 
 # Tag the resources ...
 def lambda_handler(event, context):
-    searchTagKey = '${var.search_tag_key}'
-    searchTagValue = '${var.search_tag_value}'
+    searchTagKey = '${search_tag_key}'
+    searchTagValue = '${search_tag_value}'
     filter = [{'Name':'tag:' + searchTagKey, 'Values':[searchTagValue]}]
 
     ec2 = boto3.resource('ec2', region_name=region)
