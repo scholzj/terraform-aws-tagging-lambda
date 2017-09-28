@@ -13,17 +13,16 @@ LOGGER.addHandler(log_handler)
 
 # Tagging configuration generated on ${timestamp}
 region = "${aws_region}"
-cluster = "${cluster_name}"
 setTags = ${tags}
 
 if 'Name' not in setTags.keys():
-    setTags['Name'] = "${cluster_name}-resource"
+    setTags['Name'] = "${name}-resource"
 
 # Tag the resources ...
 def lambda_handler(event, context):
-    kubeClusterTagKey = 'kubernetes.io/cluster/' + cluster
-    kubeClusterTagValue = 'owned'
-    filter = [{'Name':'tag:' + kubeClusterTagKey, 'Values':[kubeClusterTagValue]}]
+    searchTagKey = '${var.search_tag_key}'
+    searchTagValue = '${var.search_tag_value}'
+    filter = [{'Name':'tag:' + searchTagKey, 'Values':[searchTagValue]}]
 
     ec2 = boto3.resource('ec2', region_name=region)
 
@@ -101,8 +100,8 @@ def lambda_handler(event, context):
             rtg.create_tags(Tags=newTags)
 
     # VPC
-    # Current setup is VPC == Cluster. Therefore we can tag things through VPC. With shared VPC, which should be avoided.
-    # The untagged things under the VPC should be anyway related to VPC and not Kubernetes cluster. So if they are only
+    # Current setup is VPC == Application. Therefore we can tag things through VPC. With shared VPC this should be avoided.
+    # The untagged things under the VPC should be anyway related to VPC and not application. So if they are only
     # here, they are not ours in shared VPC
     vpcs = ec2.vpcs.filter(Filters=filter)
     for vpc in vpcs:
@@ -137,7 +136,7 @@ def lambda_handler(event, context):
     asgs = autoscaling.describe_auto_scaling_groups(MaxRecords=100)
     for asg in asgs['AutoScalingGroups']:
         for tag in asg['Tags']:
-            if tag['Key'] == kubeClusterTagKey and tag['Value'] == kubeClusterTagValue:
+            if tag['Key'] == searchTagKey and tag['Value'] == searchTagValue:
                 newTags = prepare_new_tags(asg['Tags'])
 
                 if len(newTags) > 0:
@@ -155,7 +154,7 @@ def lambda_handler(event, context):
     for elb in elbs['LoadBalancerDescriptions']:
         tags = loadbalancing.describe_tags(LoadBalancerNames=[elb['LoadBalancerName']])
         for tag in tags['TagDescriptions'][0]['Tags']:
-            if tag['Key'] == kubeClusterTagKey and tag['Value'] == kubeClusterTagValue:
+            if tag['Key'] == searchTagKey and tag['Value'] == searchTagValue:
                 newTags = prepare_new_tags(tags['TagDescriptions'][0]['Tags'])
                 if len(newTags) > 0:
                     LOGGER.info("Adding tags to load balancer %s", elb['LoadBalancerName'])
