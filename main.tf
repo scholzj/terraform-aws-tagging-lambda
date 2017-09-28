@@ -61,7 +61,9 @@ data "template_file" "lambda" {
     
     vars {
       aws_region = "${var.aws_region}"
-      cluster_name = "${var.cluster_name}"
+      name = "${var.cluster_name}"
+      search_tag_key = "${var.search_tag_key}"
+      search_tag_value = "${var.search_tag_value}"
       tags = "${jsonencode(var.tags)}"
       timestamp = "${timestamp()}"
     }
