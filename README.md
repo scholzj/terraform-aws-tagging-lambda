@@ -64,7 +64,7 @@ Although it can be run on its own, the main value is that it can be included int
 module "tagging-lambda" {
   source = "scholzj/tagging-lambda/aws"
 
-  aws_region        = "eu-east-1"
+  aws_region        = "us-east-1"
   name              = "my-application"
   search_tag_key    = "kubernetes.io/cluster/aws-k8s"
   search_tag_value  = "owned"

@@ -1,4 +1,4 @@
-aws_region    = "eu-east-1"
+aws_region    = "us-east-1"
 
 # Used for naming related resources
 lambda_name  = "my-k8s"

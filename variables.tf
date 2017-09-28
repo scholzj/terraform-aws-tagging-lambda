@@ -1,6 +1,6 @@
 variable "aws_region" {
     description = "Region where Cloud Formation is created"
-    default     = "eu-east-1"
+    default     = "us-east-1"
 }
 
 variable "lambda_name" {
